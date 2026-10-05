@@ -64,6 +64,9 @@ td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:now
 .cols div{display:grid;gap:6px;min-width:0}
 .cols h3{margin:0;font:600 17px/1.3 var(--body)}
 .cols p{color:var(--muted);font-size:15px}
+.photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.photos img{background:#fff}
+@media (max-width:640px){.photos{grid-template-columns:1fr}}
 ul.plain{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--rule);padding-top:18px}
 @media (max-width:640px){.hint{margin-left:0;width:100%}}
@@ -97,10 +100,20 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--rule);paddin
 </div>
 
 <section>
-  <h2>Seen from each photo's camera</h2>
+  <h2>The three photos it started from</h2>
+  <div class="photos">
+    <figure><img src="photo-front.jpg" alt="Front photo of the alternator, pulley facing the camera" loading="lazy"><figcaption>Front</figcaption></figure>
+    <figure><img src="photo-side.jpg" alt="Side photo of the alternator, pulley on the right" loading="lazy"><figcaption>Side</figcaption></figure>
+    <figure><img src="photo-back.jpg" alt="Back photo of the alternator showing cooling fins, plug and B+ terminal" loading="lazy"><figcaption>Back</figcaption></figure>
+  </div>
+  <p class="lede" style="font-size:15px">That is the entire input: three product photos, no measurements, no turntable, no scanner.</p>
+</section>
+
+<section>
+  <h2>Each photo next to the model</h2>
   <figure>
-    <img src="camera-views.jpg" alt="The model rendered from the front, side and back camera positions recovered from the photos" loading="lazy">
-    <figcaption>The model drawn from the exact positions the three photos were taken from. The cameras themselves were recovered from the photos — they were shot from about 18° above, with real perspective.</figcaption>
+    <img src="photo-vs-model.jpg" alt="Each photo beside the model rendered from the same camera position" loading="lazy">
+    <figcaption>Left: the photo. Right: the model drawn from the exact position that photo was taken from. The cameras were recovered from the photos themselves — they were shot from about 18° above, with real perspective.</figcaption>
   </figure>
 </section>
 
@@ -144,7 +157,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--rule);paddin
   </div>
 </section>
 
-<footer>Built from three retailer catalog photographs, which are not reproduced here. 3-D viewer: three.js. © Parts3D.</footer>
+<footer>Photos and model © ehkruse1-code. 3-D viewer: three.js.</footer>
 </div>
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
