@@ -15,7 +15,7 @@
 <header>
   <div class="eyebrow">Chapter 3 of 3 · Measured CAD</div>
   <h1>The measured model</h1>
-  <p class="lede">The third attempt kept the recovered cameras and scale from chapter 2 and designed the part the way an engineer would: turned housings, a grooved pulley, round mounting pillars, 48 cooling fins, and vent windows traced from the photos and cut through the castings. Every change was scored against all three photos and kept only if the score improved.</p>
+  <p class="lede">The third attempt kept the recovered cameras and scale from chapter 2, but this time the design was done by Claude, Anthropic's AI model, working as a coding agent on the same computer. Claude wrote the alternator as a CAD program, the way an engineer builds a part in a CAD package: turned housings, a grooved pulley, round mounting pillars, 48 cooling fins, and vent windows traced from the photos and cut through the castings. Every change was scored against all three photos and kept only if the score improved.</p>
   <div class="stats">
     <div class="stat"><b>187 × 131 × 182 mm</b><span>overall size</span></div>
     <div class="stat"><b>3.56 mm = 18 px</b><span>scale, from the belt-groove pitch</span></div>
@@ -48,19 +48,34 @@
 <section>
   <h2>How it was built</h2>
   <ol class="steps">
-    <li><div><b>Recover the cameras</b><span>VGGT worked out where each photo was taken from and produced a rough point cloud, as in chapter 2.</span></div></li>
-    <li><div><b>Find the scale without measuring</b><span>The 6-rib pulley's grooves are 3.56 mm apart; in the side photo that spacing is 18 pixels.</span></div></li>
-    <li><div><b>Design it as real CAD</b><span>Each part is a proper solid with its own dimensions, combined with solid modelling, the same way a CAD package builds a part.</span></div></li>
-    <li><div><b>Score every change against the photos</b><span>Each change is drawn from all three cameras and compared on outline, edges and surface depth. It stays only if the whole model scores better.</span></div></li>
+    <li><div><b>Recover the cameras</b><span>VGGT, Meta's 3-D vision model, worked out where each photo was taken from and produced a rough point cloud, as in chapter 2.</span></div></li>
+    <li><div><b>Find the scale without measuring</b><span>The 6-rib pulley's grooves are 3.56 mm apart. Claude measured that spacing in the side photo (18 pixels), which sets the size of everything else.</span></div></li>
+    <li><div><b>Design it as real CAD</b><span>Claude wrote a Python program in which every part is a proper solid with named dimensions. The solids are built and combined by manifold3d, an open-source solid-modelling library, the same way a CAD package builds a part.</span></div></li>
+    <li><div><b>Score every change against the photos</b><span>A scoring program, also written by Claude, draws the model from all three recovered cameras and compares it with each photo on outline, edges and surface depth. A change stays only if the whole model scores better.</span></div></li>
   </ol>
 </section>
 
 <section>
+  <h2>Who and what did the work</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Tool</th><th>What it is</th><th>What it did here</th></tr></thead>
+    <tbody>
+      <tr><td>Claude (Anthropic), in Claude Code</td><td>An AI model working as a coding agent on this computer: it reads images, writes and runs programs</td><td>Studied the photos, decided what to measure, wrote and revised the CAD program and the scoring program, and ran every measurement</td></tr>
+      <tr><td>VGGT-1B (Meta)</td><td>A 3-D vision model, run locally</td><td>Recovered the three camera positions and a point cloud of the visible surfaces</td></tr>
+      <tr><td>manifold3d</td><td>Open-source solid-modelling library</td><td>Built the solids and cut the openings</td></tr>
+      <tr><td>OpenCV, NumPy, SciPy</td><td>Open-source image-processing and maths libraries</td><td>Found the edges in the photos for scoring, and fine-tuned dimensions to fit the photos</td></tr>
+      <tr><td>three.js</td><td>Browser 3-D library</td><td>Draws the rotatable model on this page</td></tr>
+      <tr><td>The project's owner</td><td>The human behind the project</td><td>Took the photos, reviewed each version, and spotted three flaws the scores had missed</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
   <h2>Getting from first draft to this</h2>
-  <p>The first hand-built versions (v1 to v4) used cameras solved from points clicked by hand in each photo. They had the right parts in roughly the right places, but they were judged mostly on outline, and outline hides a lot. At v5 the model moved onto the VGGT cameras. Then a closer look at the photos found three things the drafts had wrong: the mounting pillars were square instead of round, the B+ battery terminal on the back was the wrong shape, and the front face was a flat plate where the side photo shows it stepped. Each fix was measured, and one was a correction of an earlier "fix": shortening the terminal scored worse, because its length had been right and its shape wrong.</p>
+  <p>Claude's first versions (v1 to v4) used cameras it solved itself from landmark points (bolt heads, the shaft centre, the tops of the mounting holes) that it located in each photo by pixel position. They had the right parts in roughly the right places, but they were judged mostly on outline, and outline hides a lot. At v5 the model moved onto the VGGT cameras. Then the project's owner compared the model with the photos and pointed out three things Claude had missed: the mounting pillars were square instead of round, the B+ battery terminal on the back was the wrong shape, and the front face was a flat plate where the side photo shows it stepped. Claude measured and fixed each one, and one fix corrected an earlier "fix" of its own: shortening the terminal scored worse, because its length had been right and its shape wrong.</p>
   <div class="tablewrap"><table>
     <thead><tr><th>Version</th><th>What changed</th><th>Outline match</th><th>Edges matched</th><th>Depth error</th></tr></thead>
-    <tbody><tr><td>v5</td><td>Hand-built CAD moved onto VGGT cameras</td><td class="num">94.5 %</td><td class="num">52 %</td><td class="num">4.90 mm</td></tr><tr><td>v6</td><td>Scorer in charge: depth and edges, not just outline</td><td class="num">94.4 %</td><td class="num">53 %</td><td class="num">3.17 mm</td></tr><tr><td>v8</td><td>Round pillars, full-length fins, refitted B+ terminal</td><td class="num">95.1 %</td><td class="num">55 %</td><td class="num">2.79 mm</td></tr><tr class="here"><td>v10</td><td>Stepped front face, vent windows, fitted pulley</td><td class="num">96.1 %</td><td class="num">61 %</td><td class="num">2.43 mm</td></tr></tbody>
+    <tbody><tr><td>v5</td><td>Claude's CAD moved onto the VGGT cameras</td><td class="num">94.5 %</td><td class="num">52 %</td><td class="num">4.90 mm</td></tr><tr><td>v6</td><td>Scorer in charge: depth and edges, not just outline</td><td class="num">94.4 %</td><td class="num">53 %</td><td class="num">3.17 mm</td></tr><tr><td>v8</td><td>Round pillars, full-length fins, refitted B+ terminal</td><td class="num">95.1 %</td><td class="num">55 %</td><td class="num">2.79 mm</td></tr><tr class="here"><td>v10</td><td>Stepped front face, vent windows, fitted pulley</td><td class="num">96.1 %</td><td class="num">61 %</td><td class="num">2.43 mm</td></tr></tbody>
   </table></div>
   <p class="small">Averages over the three photos. The outline barely moved after v5; the depth error halved and the share of real edges reproduced kept climbing. Changes that scored worse, such as full-width front plates or deeper fins, were thrown out.</p>
 </section>
@@ -93,7 +108,7 @@
   <div class="cols">
     <div><h3>Measured where it was seen</h3><p>Everything visible in at least one photo is measured from it. The top, the bottom and the unphotographed side are reasonable fill-ins.</p></div>
     <div><h3>Materials are generic</h3><p>Cast aluminium, black-coated steel, brass, copper and plastic are standard material settings, not colours taken from the photos.</p></div>
-    <div><h3>Designed by hand, this time</h3><p>This model was designed with the measuring tools rather than generated automatically. Making that automatic is the open problem.</p></div>
+    <div><h3>Designed step by step, this time</h3><p>Claude made each design decision in turn and checked it with the measuring tools; this was not a one-click pipeline. Making the design step run on its own for any part is the open problem.</p></div>
   </div>
 </section>
 

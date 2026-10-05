@@ -15,7 +15,7 @@
 <header>
   <div class="eyebrow">Chapter 2 of 3 · Automatic shapes</div>
   <h1>Simple shapes</h1>
-  <p class="lede">The second attempt started over with clean geometry: cylinders, boxes, turned profiles and holes, each with real dimensions. The goal was full automation. Give it any three photos and it works out the cameras, the scale and the parts on its own.</p>
+  <p class="lede">The second attempt started over with clean geometry: cylinders, boxes, turned profiles and holes, each with real dimensions. Claude, Anthropic's AI model working as a coding agent, built it as a fully automatic pipeline. Give it any three photos and it works out the cameras, the scale and the parts on its own, using local AI models and a fitting program.</p>
   <div class="stats"><div class="stat"><b>14</b><span>components, 5,180 triangles</span></div><div class="stat"><b>93.9 %</b><span>outline match, average</span></div><div class="stat"><b>16 %</b><span>photo edges reproduced</span></div><div class="stat"><b>2.49 mm</b><span>average depth error</span></div></div>
 </header>
 
@@ -43,22 +43,22 @@
 <section>
   <h2>Finding the cameras</h2>
   <p>A clean model is only as good as the cameras it's compared through. First up was a local vision-language model, Qwen3.8-Flash-Next. On a single photo it could point at features to within about 4 pixels, but it could not reliably match the same feature across two photos. That's the step that turns flat pictures into geometry, so this was a dead end.</p>
-  <p>VGGT, a 3-D vision model from Meta running locally, solved it in seconds. It placed the three cameras within 3–7° of a careful hand solution and recovered a rough point cloud of every surface the photos show.</p>
+  <p>VGGT, a 3-D vision model from Meta running locally, solved it in seconds. It placed the three cameras within 3–7° of the cameras Claude had solved earlier from landmark points, and recovered a rough point cloud of every surface the photos show.</p>
 </section>
 
 <section>
   <h2>The automatic pipeline</h2>
   <ol class="steps">
-    <li><div><b>Identify the part first</b><span>A vision model looks at each photo, says what the part is and describes it for building, then reconciles the three descriptions.</span></div></li>
-    <li><div><b>Scale without a tape measure</b><span>The description names a standard feature: here, a 6-rib serpentine belt pulley, whose grooves are 3.56 mm apart. Measuring that spacing in the photo sets the size of everything.</span></div></li>
-    <li><div><b>List the components</b><span>The model lists the parts it sees in a fixed vocabulary (revolved body, cylinder, box, hole), each with an axis and where it appears.</span></div></li>
-    <li><div><b>Fit</b><span>An optimiser adjusts every dimension until the shapes match the outlines in all three photos and the recovered point cloud.</span></div></li>
+    <li><div><b>Identify the part first</b><span>Qwen3.8-Flash-Next, a vision-language model running locally, looks at each photo, says what the part is and describes it for building, then reconciles the three descriptions.</span></div></li>
+    <li><div><b>Scale without a tape measure</b><span>The description names a standard feature: here, a 6-rib serpentine belt pulley, whose grooves are 3.56 mm apart. The pipeline measures that spacing in the photo automatically, which sets the size of everything.</span></div></li>
+    <li><div><b>List the components</b><span>The same local model lists the parts it sees in a fixed vocabulary (revolved body, cylinder, box, hole), each with an axis and where it appears.</span></div></li>
+    <li><div><b>Fit</b><span>An optimiser (from the SciPy library) adjusts every dimension until the shapes match the outlines in all three photos and VGGT's point cloud.</span></div></li>
   </ol>
 </section>
 
 <section>
   <h2>What it got right, and what it couldn't</h2>
-  <p>The overall size came out at 187 × 142 × 176 mm with no measurement given, against the final model's 187 × 131 × 182 mm. The outline match is respectable at 93.9 %, and the depth error is low because a smooth envelope can sit close to the surfaces the cameras saw. But it reproduces only 16 % of the edges in the photos: there are no cooling fins, no vent windows and no castings. One mounting ear came out as a plain block. A review round, where the AI looked at its own result and revised its parts list, changed almost nothing.</p>
+  <p>The overall size came out at 187 × 142 × 176 mm with no measurement given, against the final model's 187 × 131 × 182 mm. The outline match is respectable at 93.9 %, and the depth error is low because a smooth envelope can sit close to the surfaces the cameras saw. But it reproduces only 16 % of the edges in the photos: there are no cooling fins, no vent windows and no castings. One mounting ear came out as a plain block. A review round, where the local model looked at its own result and revised its parts list, changed almost nothing.</p>
 </section>
 
 <div class="lesson">
