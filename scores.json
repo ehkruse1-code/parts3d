@@ -1,0 +1,67 @@
+{
+ "measured": {
+  "front": {
+   "iou": 0.9676,
+   "edge_recall": 0.737,
+   "edge_precision": 0.797,
+   "depth_mm": 2.15
+  },
+  "side": {
+   "iou": 0.9557,
+   "edge_recall": 0.564,
+   "edge_precision": 0.595,
+   "depth_mm": 2.67
+  },
+  "back": {
+   "iou": 0.9612,
+   "edge_recall": 0.537,
+   "edge_precision": 0.634,
+   "depth_mm": 2.46
+  }
+ },
+ "melted": {
+  "front": {
+   "iou": 0.9471,
+   "edge_recall": 0.717,
+   "edge_precision": 0.775,
+   "depth_mm": 3.9
+  },
+  "side": {
+   "iou": 0.931,
+   "edge_recall": 0.469,
+   "edge_precision": 0.441,
+   "depth_mm": 3.47
+  },
+  "back": {
+   "iou": 0.9468,
+   "edge_recall": 0.544,
+   "edge_precision": 0.585,
+   "depth_mm": 2.99
+  }
+ },
+ "simple": {
+  "front": {
+   "iou": 0.9287,
+   "edge_recall": 0.252,
+   "edge_precision": 0.741,
+   "depth_mm": 3.08
+  },
+  "side": {
+   "iou": 0.9492,
+   "edge_recall": 0.135,
+   "edge_precision": 0.363,
+   "depth_mm": 2.16
+  },
+  "back": {
+   "iou": 0.9403,
+   "edge_recall": 0.096,
+   "edge_precision": 0.446,
+   "depth_mm": 2.22
+  }
+ },
+ "triangles": {
+  "melted": 140000,
+  "simple": 5180,
+  "measured": 61888
+ }
+}

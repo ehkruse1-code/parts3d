@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Measured Model — Parts3D</title>
+<meta name="description" content="Chapter 3: the alternator designed as real CAD, every dimension measured from three photos and every change scored against them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Narrow:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="topnav" aria-label="Chapters"><a class="brand" href="index.html">Parts3D</a><a href="melted.html">1 · Melted</a><a href="simple-shapes.html">2 · Simple shapes</a><a href="measured.html" aria-current="page">3 · Measured</a></nav>
+<header>
+  <div class="eyebrow">Chapter 3 of 3 · Measured CAD</div>
+  <h1>The measured model</h1>
+  <p class="lede">The third attempt kept the recovered cameras and scale from chapter 2 and designed the part the way an engineer would: turned housings, a grooved pulley, round mounting pillars, 48 cooling fins, and vent windows traced from the photos and cut through the castings. Every change was scored against all three photos and kept only if the score improved.</p>
+  <div class="stats">
+    <div class="stat"><b>187 × 131 × 182 mm</b><span>overall size</span></div>
+    <div class="stat"><b>3.56 mm = 18 px</b><span>scale, from the belt-groove pitch</span></div>
+    <div class="stat"><b>96.2 %</b><span>outline match, average</span></div>
+    <div class="stat"><b>2.43 mm</b><span>average depth error</span></div>
+  </div>
+</header>
+
+<div class="viewer">
+  <div class="stage" data-model="alternator.glb" role="img" aria-label="Interactive 3-D model of the measured alternator"><canvas></canvas><p class="status">Loading model…</p></div>
+  <div class="bar" role="group" aria-label="Camera presets">
+    <button data-view="0,15">Front</button>
+    <button data-view="-90,17">Side</button>
+    <button data-view="180,15">Back</button>
+    <button data-view="35,22" aria-pressed="true">Three-quarter</button>
+    <button id="spin" aria-pressed="false">Rotate</button>
+    <span class="hint">Drag to orbit · right-drag to pan · scroll or pinch to zoom</span>
+  </div>
+</div>
+
+
+<section>
+  <h2>Each photo next to the model</h2>
+  <figure>
+    <img src="photo-vs-model.jpg" alt="Each photo beside the model rendered from the same camera position" loading="lazy">
+    <figcaption>Left: the photo. Right: the model from the exact position that photo was taken from. The photos were shot from about 18° above, with real perspective.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>How it was built</h2>
+  <ol class="steps">
+    <li><div><b>Recover the cameras</b><span>VGGT worked out where each photo was taken from and produced a rough point cloud, as in chapter 2.</span></div></li>
+    <li><div><b>Find the scale without measuring</b><span>The 6-rib pulley's grooves are 3.56 mm apart; in the side photo that spacing is 18 pixels.</span></div></li>
+    <li><div><b>Design it as real CAD</b><span>Each part is a proper solid with its own dimensions, combined with solid modelling, the same way a CAD package builds a part.</span></div></li>
+    <li><div><b>Score every change against the photos</b><span>Each change is drawn from all three cameras and compared on outline, edges and surface depth. It stays only if the whole model scores better.</span></div></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Getting from first draft to this</h2>
+  <p>The first hand-built versions (v1 to v4) used cameras solved from points clicked by hand in each photo. They had the right parts in roughly the right places, but they were judged mostly on outline, and outline hides a lot. At v5 the model moved onto the VGGT cameras. Then a closer look at the photos found three things the drafts had wrong: the mounting pillars were square instead of round, the B+ battery terminal on the back was the wrong shape, and the front face was a flat plate where the side photo shows it stepped. Each fix was measured, and one was a correction of an earlier "fix": shortening the terminal scored worse, because its length had been right and its shape wrong.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Version</th><th>What changed</th><th>Outline match</th><th>Edges matched</th><th>Depth error</th></tr></thead>
+    <tbody><tr><td>v5</td><td>Hand-built CAD moved onto VGGT cameras</td><td class="num">94.5 %</td><td class="num">52 %</td><td class="num">4.90 mm</td></tr><tr><td>v6</td><td>Scorer in charge: depth and edges, not just outline</td><td class="num">94.4 %</td><td class="num">53 %</td><td class="num">3.17 mm</td></tr><tr><td>v8</td><td>Round pillars, full-length fins, refitted B+ terminal</td><td class="num">95.1 %</td><td class="num">55 %</td><td class="num">2.79 mm</td></tr><tr class="here"><td>v10</td><td>Stepped front face, vent windows, fitted pulley</td><td class="num">96.1 %</td><td class="num">61 %</td><td class="num">2.43 mm</td></tr></tbody>
+  </table></div>
+  <p class="small">Averages over the three photos. The outline barely moved after v5; the depth error halved and the share of real edges reproduced kept climbing. Changes that scored worse, such as full-width front plates or deeper fins, were thrown out.</p>
+</section>
+
+<section>
+  <h2>How close it is, photo by photo</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Photo</th><th>Outline match</th><th>Edges matched</th><th>Edge precision</th><th>Depth error</th></tr></thead>
+    <tbody><tr><td>Front</td><td class="num">96.8 %</td><td class="num">73.7 %</td><td class="num">79.7 %</td><td class="num">2.15 mm</td></tr><tr><td>Side</td><td class="num">95.6 %</td><td class="num">56.4 %</td><td class="num">59.5 %</td><td class="num">2.67 mm</td></tr><tr><td>Back</td><td class="num">96.1 %</td><td class="num">53.7 %</td><td class="num">63.4 %</td><td class="num">2.46 mm</td></tr></tbody>
+  </table></div>
+  <p class="small">The gaps that remain are mostly fine casting detail: small ribs, bosses and what's inside the vents.</p>
+</section>
+
+<section>
+  <h2>From angles no photo shows</h2>
+  <figure>
+    <img src="other-angles.jpg" alt="The model from front three-quarter, rear three-quarter, top and the unphotographed side" loading="lazy">
+    <figcaption>Front three-quarter, rear three-quarter, top, and the side no photo covered. Surfaces the photos never saw are reasonable fill-ins, not measurements.</figcaption>
+  </figure>
+</section>
+
+<div class="lesson">
+  <div class="eyebrow">What this taught</div>
+  <h3>Design like an engineer, check like an inspector.</h3>
+  <p class="small">Neither guessing nor generic shapes got there. Real construction plus a measured check of every change against every photo did. The next step is to teach the automatic pipeline from chapter 2 to design this way for any part.</p>
+</div>
+
+<section>
+  <h2>What to keep in mind</h2>
+  <div class="cols">
+    <div><h3>Measured where it was seen</h3><p>Everything visible in at least one photo is measured from it. The top, the bottom and the unphotographed side are reasonable fill-ins.</p></div>
+    <div><h3>Materials are generic</h3><p>Cast aluminium, black-coated steel, brass, copper and plastic are standard material settings, not colours taken from the photos.</p></div>
+    <div><h3>Designed by hand, this time</h3><p>This model was designed with the measuring tools rather than generated automatically. Making that automatic is the open problem.</p></div>
+  </div>
+</section>
+
+<section id="scorecard">
+  <h2>Scorecard</h2>
+  <p class="small">All three models, scored by the same program against the same three photos. Each figure is the average of the front, side and back photo.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Model</th><th>Outline match</th><th>Edges matched</th><th>Edge precision</th><th>Depth error</th><th>Triangles</th></tr></thead>
+    <tbody>
+<tr><td><a href="melted.html">1 · Melted</a></td><td class="num">94.2 %</td><td class="num">58 %</td><td class="num">60 %</td><td class="num">3.45 mm</td><td class="num">140,000</td></tr>
+<tr><td><a href="simple-shapes.html">2 · Simple shapes</a></td><td class="num">93.9 %</td><td class="num">16 %</td><td class="num">52 %</td><td class="num">2.49 mm</td><td class="num">5,180</td></tr>
+<tr class="here"><td><a href="measured.html">3 · Measured</a></td><td class="num">96.2 %</td><td class="num">61 %</td><td class="num">68 %</td><td class="num">2.43 mm</td><td class="num">61,888</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="plain small">
+    <li><b>Outline match</b>: how much of the part's outline in each photo the model covers, and nothing more.</li>
+    <li><b>Edges matched</b>: the share of edges visible in the photos that the model reproduces within 3 pixels. <b>Edge precision</b> is the reverse: the share of the model's edges that are really in the photos.</li>
+    <li><b>Depth error</b>: average distance from the model's surface to a 3-D point cloud recovered from the photos, on surfaces the photos actually show.</li>
+    <li>The simple-shapes model is scored with the cameras its own pipeline recovered; the other two use the measured model's cameras. The melted model was given its best possible placement first, so the comparison is fair to it.</li>
+  </ul>
+</section>
+
+<nav class="pager" aria-label="Previous and next"><a href="simple-shapes.html"><span>← Previous</span><b>Chapter 2: Simple shapes</b></a><a class="next" href="index.html"><span>Back to the start</span><b>Overview</b></a></nav>
+<footer>Photos and models © ehkruse1-code. 3-D viewer: three.js. The full story starts on the <a href="index.html">overview</a>.</footer>
+</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module" src="viewer.js"></script>
+</body>
+</html>

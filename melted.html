@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Melted Model — Parts3D</title>
+<meta name="description" content="Chapter 1: a neural network generated the alternator from three photos. It looked right at a glance and was warped up close.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Narrow:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="topnav" aria-label="Chapters"><a class="brand" href="index.html">Parts3D</a><a href="melted.html" aria-current="page">1 · Melted</a><a href="simple-shapes.html">2 · Simple shapes</a><a href="measured.html">3 · Measured</a></nav>
+<header>
+  <div class="eyebrow">Chapter 1 of 3 · Neural generation</div>
+  <h1>The melted model</h1>
+  <p class="lede">The first attempt gave the three photos to Hunyuan3D, a neural network that generates a 3-D mesh straight from pictures. In seconds it produced something that is unmistakably an alternator. Turn it around, though, and the housing looks like wax left in the sun.</p>
+  <div class="stats"><div class="stat"><b>140,000</b><span>triangles, generated</span></div><div class="stat"><b>94.2 %</b><span>outline match, average</span></div><div class="stat"><b>58 %</b><span>photo edges reproduced</span></div><div class="stat"><b>3.45 mm</b><span>average depth error</span></div></div>
+</header>
+
+<div class="viewer">
+  <div class="stage" data-model="melted.glb" role="img" aria-label="Interactive 3-D model: the neural-generated alternator"><canvas></canvas><p class="status">Loading model…</p></div>
+  <div class="bar" role="group" aria-label="Camera presets">
+    <button data-view="0,15">Front</button>
+    <button data-view="-90,17">Side</button>
+    <button data-view="180,15">Back</button>
+    <button data-view="35,22" aria-pressed="true">Three-quarter</button>
+    <button id="spin" aria-pressed="false">Rotate</button>
+    <span class="hint">Drag to orbit · right-drag to pan · scroll or pinch to zoom</span>
+  </div>
+</div>
+
+
+<section>
+  <h2>Each photo next to the model</h2>
+  <figure>
+    <img src="melted-vs-photos.jpg" alt="Each photo beside the neural model drawn from the same camera position" loading="lazy">
+    <figcaption>Left: the photo. Right: the model from the same camera. The overall shape lands, but the vents are filled in, the ribs wander and the edges are soft and wavy.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>What happened</h2>
+  <ol class="steps">
+    <li><div><b>Generate</b><span>The network turned the three photos into one mesh. It never measures anything; it produces the most plausible-looking object it has learned, at no particular size.</span></div></li>
+    <li><div><b>Patch the worst parts</b><span>The pulley and two mounting ears were rebuilt as clean shapes and fused into the generated mesh. The model above is that patched version.</span></div></li>
+    <li><div><b>Hit the wall</b><span>The housing stayed as generated: warped edges, vent openings filled in and rounded over, cooling ribs that don't line up. A finer mesh only drew the same mistakes more sharply. The pulley's recess was a guessed number, only about an eighth of the pulley's depth.</span></div></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Why its edge score is closer than it looks</h2>
+  <p>On edges matched, this model nearly ties the final one (58 % against 61 %). That's an artefact: a wrinkled surface is covered in creases, and some of them land near real edges by chance. The other measures expose it. Its outline overlap is lower, its depth error is 1.4× the final model's, and in the side photo fewer than half its edges (44 %) are really there.</p>
+</section>
+
+<div class="lesson">
+  <div class="eyebrow">What this taught</div>
+  <h3>A model that imagines the part can't be corrected into one that measures it.</h3>
+  <p class="small">The mesh has no dimensions to adjust, only millions of loose points. So the next attempt threw it away and started from shapes with real sizes.</p>
+</div>
+
+<section id="scorecard">
+  <h2>Scorecard</h2>
+  <p class="small">All three models, scored by the same program against the same three photos. Each figure is the average of the front, side and back photo.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Model</th><th>Outline match</th><th>Edges matched</th><th>Edge precision</th><th>Depth error</th><th>Triangles</th></tr></thead>
+    <tbody>
+<tr class="here"><td><a href="melted.html">1 · Melted</a></td><td class="num">94.2 %</td><td class="num">58 %</td><td class="num">60 %</td><td class="num">3.45 mm</td><td class="num">140,000</td></tr>
+<tr><td><a href="simple-shapes.html">2 · Simple shapes</a></td><td class="num">93.9 %</td><td class="num">16 %</td><td class="num">52 %</td><td class="num">2.49 mm</td><td class="num">5,180</td></tr>
+<tr><td><a href="measured.html">3 · Measured</a></td><td class="num">96.2 %</td><td class="num">61 %</td><td class="num">68 %</td><td class="num">2.43 mm</td><td class="num">61,888</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="plain small">
+    <li><b>Outline match</b>: how much of the part's outline in each photo the model covers, and nothing more.</li>
+    <li><b>Edges matched</b>: the share of edges visible in the photos that the model reproduces within 3 pixels. <b>Edge precision</b> is the reverse: the share of the model's edges that are really in the photos.</li>
+    <li><b>Depth error</b>: average distance from the model's surface to a 3-D point cloud recovered from the photos, on surfaces the photos actually show.</li>
+    <li>The simple-shapes model is scored with the cameras its own pipeline recovered; the other two use the measured model's cameras. The melted model was given its best possible placement first, so the comparison is fair to it.</li>
+  </ul>
+</section>
+
+<nav class="pager" aria-label="Previous and next"><a href="index.html"><span>← Previous</span><b>Overview</b></a><a class="next" href="simple-shapes.html"><span>Next →</span><b>Chapter 2: Simple shapes</b></a></nav>
+<footer>Photos and models © ehkruse1-code. 3-D viewer: three.js. The full story starts on the <a href="index.html">overview</a>.</footer>
+</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module" src="viewer.js"></script>
+</body>
+</html>

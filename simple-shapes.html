@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Simple Shapes — Parts3D</title>
+<meta name="description" content="Chapter 2: an automatic pipeline recovered the cameras and scale from three photos and built the alternator from clean shapes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Narrow:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="wrap">
+<nav class="topnav" aria-label="Chapters"><a class="brand" href="index.html">Parts3D</a><a href="melted.html">1 · Melted</a><a href="simple-shapes.html" aria-current="page">2 · Simple shapes</a><a href="measured.html">3 · Measured</a></nav>
+<header>
+  <div class="eyebrow">Chapter 2 of 3 · Automatic shapes</div>
+  <h1>Simple shapes</h1>
+  <p class="lede">The second attempt started over with clean geometry: cylinders, boxes, turned profiles and holes, each with real dimensions. The goal was full automation. Give it any three photos and it works out the cameras, the scale and the parts on its own.</p>
+  <div class="stats"><div class="stat"><b>14</b><span>components, 5,180 triangles</span></div><div class="stat"><b>93.9 %</b><span>outline match, average</span></div><div class="stat"><b>16 %</b><span>photo edges reproduced</span></div><div class="stat"><b>2.49 mm</b><span>average depth error</span></div></div>
+</header>
+
+<div class="viewer">
+  <div class="stage" data-model="simple-shapes.glb" role="img" aria-label="Interactive 3-D model: the automatic simple-shapes alternator"><canvas></canvas><p class="status">Loading model…</p></div>
+  <div class="bar" role="group" aria-label="Camera presets">
+    <button data-view="0,15">Front</button>
+    <button data-view="-90,17">Side</button>
+    <button data-view="180,15">Back</button>
+    <button data-view="35,22" aria-pressed="true">Three-quarter</button>
+    <button id="spin" aria-pressed="false">Rotate</button>
+    <span class="hint">Drag to orbit · right-drag to pan · scroll or pinch to zoom</span>
+  </div>
+</div>
+
+
+<section>
+  <h2>Each photo next to the model</h2>
+  <figure>
+    <img src="simple-vs-photos.jpg" alt="Each photo beside the simple-shapes model drawn from the same camera position" loading="lazy">
+    <figcaption>Left: the photo. Right: the model from the same camera. The body, pulley and mounting pillars are the right size and in the right places. The fins, vents and castings are simply not there.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Finding the cameras</h2>
+  <p>A clean model is only as good as the cameras it's compared through. First up was a local vision-language model, Qwen3.8-Flash-Next. On a single photo it could point at features to within about 4 pixels, but it could not reliably match the same feature across two photos. That's the step that turns flat pictures into geometry, so this was a dead end.</p>
+  <p>VGGT, a 3-D vision model from Meta running locally, solved it in seconds. It placed the three cameras within 3–7° of a careful hand solution and recovered a rough point cloud of every surface the photos show.</p>
+</section>
+
+<section>
+  <h2>The automatic pipeline</h2>
+  <ol class="steps">
+    <li><div><b>Identify the part first</b><span>A vision model looks at each photo, says what the part is and describes it for building, then reconciles the three descriptions.</span></div></li>
+    <li><div><b>Scale without a tape measure</b><span>The description names a standard feature: here, a 6-rib serpentine belt pulley, whose grooves are 3.56 mm apart. Measuring that spacing in the photo sets the size of everything.</span></div></li>
+    <li><div><b>List the components</b><span>The model lists the parts it sees in a fixed vocabulary (revolved body, cylinder, box, hole), each with an axis and where it appears.</span></div></li>
+    <li><div><b>Fit</b><span>An optimiser adjusts every dimension until the shapes match the outlines in all three photos and the recovered point cloud.</span></div></li>
+  </ol>
+</section>
+
+<section>
+  <h2>What it got right, and what it couldn't</h2>
+  <p>The overall size came out at 187 × 142 × 176 mm with no measurement given, against the final model's 187 × 131 × 182 mm. The outline match is respectable at 93.9 %, and the depth error is low because a smooth envelope can sit close to the surfaces the cameras saw. But it reproduces only 16 % of the edges in the photos: there are no cooling fins, no vent windows and no castings. One mounting ear came out as a plain block. A review round, where the AI looked at its own result and revised its parts list, changed almost nothing.</p>
+</section>
+
+<div class="lesson">
+  <div class="eyebrow">What this taught</div>
+  <h3>Cameras and scale can be recovered automatically; detail has to be designed.</h3>
+  <p class="small">The hard geometry problem was solved: where each photo was taken from, and how big the part is. What was missing was a designer who knows how an alternator is built and a strict check of every change against the photos. That is chapter 3.</p>
+</div>
+
+<section id="scorecard">
+  <h2>Scorecard</h2>
+  <p class="small">All three models, scored by the same program against the same three photos. Each figure is the average of the front, side and back photo.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Model</th><th>Outline match</th><th>Edges matched</th><th>Edge precision</th><th>Depth error</th><th>Triangles</th></tr></thead>
+    <tbody>
+<tr><td><a href="melted.html">1 · Melted</a></td><td class="num">94.2 %</td><td class="num">58 %</td><td class="num">60 %</td><td class="num">3.45 mm</td><td class="num">140,000</td></tr>
+<tr class="here"><td><a href="simple-shapes.html">2 · Simple shapes</a></td><td class="num">93.9 %</td><td class="num">16 %</td><td class="num">52 %</td><td class="num">2.49 mm</td><td class="num">5,180</td></tr>
+<tr><td><a href="measured.html">3 · Measured</a></td><td class="num">96.2 %</td><td class="num">61 %</td><td class="num">68 %</td><td class="num">2.43 mm</td><td class="num">61,888</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="plain small">
+    <li><b>Outline match</b>: how much of the part's outline in each photo the model covers, and nothing more.</li>
+    <li><b>Edges matched</b>: the share of edges visible in the photos that the model reproduces within 3 pixels. <b>Edge precision</b> is the reverse: the share of the model's edges that are really in the photos.</li>
+    <li><b>Depth error</b>: average distance from the model's surface to a 3-D point cloud recovered from the photos, on surfaces the photos actually show.</li>
+    <li>The simple-shapes model is scored with the cameras its own pipeline recovered; the other two use the measured model's cameras. The melted model was given its best possible placement first, so the comparison is fair to it.</li>
+  </ul>
+</section>
+
+<nav class="pager" aria-label="Previous and next"><a href="melted.html"><span>← Previous</span><b>Chapter 1: The melted model</b></a><a class="next" href="measured.html"><span>Next →</span><b>Chapter 3: The measured model</b></a></nav>
+<footer>Photos and models © ehkruse1-code. 3-D viewer: three.js. The full story starts on the <a href="index.html">overview</a>.</footer>
+</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module" src="viewer.js"></script>
+</body>
+</html>

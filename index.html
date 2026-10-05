@@ -4,200 +4,78 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Parts3D — Alternator Rebuild</title>
-<meta name="description" content="A car alternator rebuilt as a measured 3-D CAD model from three catalog photos. Rotate it in your browser.">
+<meta name="description" content="How a car alternator was rebuilt as a measured 3-D model from three photos, in three attempts.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Narrow:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>
-/* Layout: a single reading column; the rotatable model is the hero, evidence and method follow. */
-:root{
-  --bg:#f2f3f4; --panel:#ffffff; --ink:#1d2329; --muted:#5b6670; --rule:#d5dadf;
-  --brass:#9a6b12; --brass-soft:#f3e7cf; --good:#2f6b3f; --warn:#8a5a10;
-  --display:"Archivo Narrow","Arial Narrow",Arial,sans-serif;
-  --body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
-  color-scheme:light;
-}
-@media (prefers-color-scheme: dark){:root{
-  --bg:#15191d; --panel:#1d2227; --ink:#e6e9ec; --muted:#9aa5ae; --rule:#323a42;
-  --brass:#d9a441; --brass-soft:#3a2f1a; --good:#7fc08e; --warn:#e0b060; color-scheme:dark}}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding:28px 16px 64px}
-.wrap{max-width:1080px;margin:0 auto;display:grid;gap:44px}
-h1,h2{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:.005em}
-h1{font-size:clamp(32px,5.4vw,52px);line-height:1.04}
-h2{font-size:27px;line-height:1.15}
-p{margin:0;max-width:68ch}
-a{color:var(--brass)}
-.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
-.lede{color:var(--muted);font-size:18px}
-header{display:grid;gap:14px}
-.stats{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:6px}
-.stat{display:grid;gap:2px}
-.stat b{font:500 20px/1.2 var(--mono);font-variant-numeric:tabular-nums}
-.stat span{font-size:13px;color:var(--muted)}
-.viewer{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#5d646a}
-#stage{position:relative;height:min(70vh,640px);background:radial-gradient(ellipse 70% 75% at 50% 45%,#a2a9af 0%,#848b91 45%,#5d646a 100%);touch-action:none}
-#cv{display:block;width:100%;height:100%;cursor:grab}#cv:active{cursor:grabbing}
-.status{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:13px;color:#eef1f3;pointer-events:none}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 14px;background:var(--panel);border-top:1px solid var(--rule)}
-button{font:500 14px/1 var(--body);padding:9px 13px;border:1px solid var(--rule);border-radius:4px;background:var(--panel);color:var(--ink);cursor:pointer}
-button:hover{border-color:var(--brass)}
-button[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--panel)}
-button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
-.hint{margin-left:auto;font-size:13px;color:var(--muted)}
-section{display:grid;gap:16px}
-figure{margin:0;display:grid;gap:8px}
-figure img{width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;background:#5d646a}
-figcaption{font-size:14px;color:var(--muted);max-width:80ch}
-ol.steps{margin:0;padding:0;list-style:none;display:grid;gap:16px;counter-reset:s}
-ol.steps li{display:grid;grid-template-columns:34px 1fr;gap:12px;counter-increment:s}
-ol.steps li::before{content:counter(s);font:500 14px/30px var(--mono);text-align:center;width:30px;height:30px;border:1px solid var(--brass);color:var(--brass);border-radius:50%}
-ol.steps b{display:block}
-ol.steps span{color:var(--muted);font-size:15px}
-.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--panel)}
-table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
-th{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px}
-.cols div{display:grid;gap:6px;min-width:0}
-.cols h3{margin:0;font:600 17px/1.3 var(--body)}
-.cols p{color:var(--muted);font-size:15px}
-.photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.photos img{background:#fff}
-@media (max-width:640px){.photos{grid-template-columns:1fr}}
-ul.plain{margin:0;padding-left:20px;display:grid;gap:6px;max-width:75ch}
-footer{color:var(--muted);font-size:13px;border-top:1px solid var(--rule);padding-top:18px}
-@media (max-width:640px){.hint{margin-left:0;width:100%}}
-@media (prefers-reduced-motion: reduce){*{transition:none!important}}
-</style>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 <div class="wrap">
+<nav class="topnav" aria-label="Chapters"><a class="brand" href="index.html" aria-current="page">Parts3D</a><a href="melted.html">1 · Melted</a><a href="simple-shapes.html">2 · Simple shapes</a><a href="measured.html">3 · Measured</a></nav>
 <header>
   <div class="eyebrow">Parts3D · photo to measured CAD</div>
-  <h1>A car alternator, rebuilt in 3-D from three catalog photos</h1>
-  <p class="lede">Three ordinary product photos — front, side and back — were turned into a solid, measured CAD model. No scanner, no tape measure. Every dimension comes from the photos, and every change to the model was kept only if it matched the photos better.</p>
-  <div class="stats">
-    <div class="stat"><b>187 × 131 × 182 mm</b><span>overall size</span></div>
-    <div class="stat"><b>3.56 mm = 18 px</b><span>scale, from the belt-groove pitch</span></div>
-    <div class="stat"><b>96–97 %</b><span>outline match to each photo</span></div>
-    <div class="stat"><b>2.2–2.7 mm</b><span>average surface depth error</span></div>
-  </div>
+  <h1>Three photos, three attempts, one measured alternator</h1>
+  <p class="lede">The goal: take three ordinary photos of a part (front, side and back) and get back an accurate 3-D model you can turn in your hand. No scanner and no tape measure. It took three very different approaches to get there, and each one taught the next.</p>
 </header>
 
-<div class="viewer">
-  <div id="stage" role="img" aria-label="Interactive 3-D model of the alternator"><canvas id="cv"></canvas><p id="status" class="status">Loading model…</p></div>
-  <div class="bar" role="group" aria-label="Camera presets">
-    <button data-view="0,15">Front</button>
-    <button data-view="-90,17">Side</button>
-    <button data-view="180,15">Back</button>
-    <button data-view="35,22" aria-pressed="true">Three-quarter</button>
-    <button id="spin" aria-pressed="false">Rotate</button>
-    <span class="hint">Drag to orbit · right-drag to pan · scroll or pinch to zoom</span>
-  </div>
-</div>
-
 <section>
-  <h2>The three photos it started from</h2>
   <div class="photos">
-    <figure><img src="photo-front.jpg" alt="Front photo of the alternator, pulley facing the camera" loading="lazy"><figcaption>Front</figcaption></figure>
-    <figure><img src="photo-side.jpg" alt="Side photo of the alternator, pulley on the right" loading="lazy"><figcaption>Side</figcaption></figure>
-    <figure><img src="photo-back.jpg" alt="Back photo of the alternator showing cooling fins, plug and B+ terminal" loading="lazy"><figcaption>Back</figcaption></figure>
+    <figure><img src="photo-front.jpg" alt="Front photo of the alternator, pulley facing the camera"><figcaption>Front</figcaption></figure>
+    <figure><img src="photo-side.jpg" alt="Side photo of the alternator, pulley on the right"><figcaption>Side</figcaption></figure>
+    <figure><img src="photo-back.jpg" alt="Back photo of the alternator showing cooling fins, plug and B+ terminal"><figcaption>Back</figcaption></figure>
   </div>
-  <p class="lede" style="font-size:15px">That is the entire input: three product photos, no measurements, no turntable, no scanner.</p>
+  <p class="small">The entire input, all three times: these three photos.</p>
 </section>
 
 <section>
-  <h2>Each photo next to the model</h2>
-  <figure>
-    <img src="photo-vs-model.jpg" alt="Each photo beside the model rendered from the same camera position" loading="lazy">
-    <figcaption>Left: the photo. Right: the model drawn from the exact position that photo was taken from. The cameras were recovered from the photos themselves — they were shot from about 18° above, with real perspective.</figcaption>
-  </figure>
+  <h2>The story in three chapters</h2>
+  <div class="cards">
+  <a class="card" href="melted.html">
+    <img src="thumb-melted.jpg" alt="The melted model, three-quarter view" width="700" height="700">
+    <div class="body"><span class="num">CHAPTER 1 · NEURAL GENERATION</span><h3>The melted model</h3><p>A neural network guessed the whole part from the photos. It looks right at a glance and is warped up close.</p>
+      <span class="score">94.2 % outline · 58 % edges · 3.5 mm</span></div>
+  </a>
+  <a class="card" href="simple-shapes.html">
+    <img src="thumb-simple.jpg" alt="The simple shapes model, three-quarter view" width="700" height="700">
+    <div class="body"><span class="num">CHAPTER 2 · AUTOMATIC SHAPES</span><h3>Simple shapes</h3><p>Recovered cameras, automatic scale and clean shapes placed by a fitter. Right size, right place, almost no detail.</p>
+      <span class="score">93.9 % outline · 16 % edges · 2.5 mm</span></div>
+  </a>
+  <a class="card" href="measured.html">
+    <img src="thumb-measured.jpg" alt="The measured model, three-quarter view" width="700" height="700">
+    <div class="body"><span class="num">CHAPTER 3 · MEASURED CAD</span><h3>The measured model</h3><p>Designed part by part like real CAD, every dimension taken from the photos and every change checked against them.</p>
+      <span class="score">96.2 % outline · 61 % edges · 2.4 mm</span></div>
+  </a>
+  </div>
 </section>
 
 <section>
-  <h2>How it was built</h2>
+  <h2>What each attempt taught the next</h2>
   <ol class="steps">
-    <li><div><b>Recover the cameras</b><span>VGGT, a 3-D vision model running locally, worked out where each photo was taken from and produced a rough 3-D point cloud of the part.</span></div></li>
-    <li><div><b>Find the scale without measuring</b><span>The pulley is a standard 6-rib serpentine pulley, whose grooves are 3.56 mm apart. Measuring that spacing in the side photo (18 px) sets the size of everything else.</span></div></li>
-    <li><div><b>Design it as real CAD</b><span>The part is built from proper engineering shapes: turned housings, a grooved pulley, round mounting pillars, 48 cooling fins, and the vent windows traced from the photos and cut through the castings.</span></div></li>
-    <li><div><b>Score it against the photos, every time</b><span>Each change is rendered from all three cameras and compared with the photos — outlines, edges, and the depth of every surface. A change stays only if the score improves.</span></div></li>
+    <li><div><b>A model that imagines the part can't be corrected into one that measures it</b><span>The neural mesh had no real dimensions to adjust. Patching clean pieces onto it kept its warped housing.</span></div></li>
+    <li><div><b>Cameras and scale can be recovered; detail has to be designed</b><span>A 3-D vision model worked out where each photo was taken from, and the belt grooves gave the scale. But a handful of generic shapes can't carry fins, vents and castings.</span></div></li>
+    <li><div><b>Design like an engineer, check like an inspector</b><span>The final model is built from real engineering shapes, and every change was kept only if it matched all three photos better.</span></div></li>
   </ol>
 </section>
 
-<section>
-  <h2>How close it is</h2>
+<section id="scorecard">
+  <h2>Scorecard</h2>
+  <p class="small">All three models, scored by the same program against the same three photos. Each figure is the average of the front, side and back photo.</p>
   <div class="tablewrap"><table>
-    <thead><tr><th>Photo</th><th>Outline match</th><th>Edges matched</th><th>Edge precision</th><th>Depth error</th></tr></thead>
+    <thead><tr><th>Model</th><th>Outline match</th><th>Edges matched</th><th>Edge precision</th><th>Depth error</th><th>Triangles</th></tr></thead>
     <tbody>
-      <tr><td>Front</td><td class="num">96.8 %</td><td class="num">73.7 %</td><td class="num">79.7 %</td><td class="num">2.15 mm</td></tr>
-      <tr><td>Side</td><td class="num">95.6 %</td><td class="num">56.4 %</td><td class="num">59.5 %</td><td class="num">2.67 mm</td></tr>
-      <tr><td>Back</td><td class="num">96.1 %</td><td class="num">53.7 %</td><td class="num">63.4 %</td><td class="num">2.46 mm</td></tr>
+<tr><td><a href="melted.html">1 · Melted</a></td><td class="num">94.2 %</td><td class="num">58 %</td><td class="num">60 %</td><td class="num">3.45 mm</td><td class="num">140,000</td></tr>
+<tr><td><a href="simple-shapes.html">2 · Simple shapes</a></td><td class="num">93.9 %</td><td class="num">16 %</td><td class="num">52 %</td><td class="num">2.49 mm</td><td class="num">5,180</td></tr>
+<tr><td><a href="measured.html">3 · Measured</a></td><td class="num">96.2 %</td><td class="num">61 %</td><td class="num">68 %</td><td class="num">2.43 mm</td><td class="num">61,888</td></tr>
     </tbody>
   </table></div>
-  <p class="lede" style="font-size:15px">“Edges matched” is the share of edges visible in each photo that the model reproduces within 3 pixels. The gaps that remain are mostly fine casting detail — small ribs, bosses and the detail inside the vents.</p>
+  <ul class="plain small">
+    <li><b>Outline match</b>: how much of the part's outline in each photo the model covers, and nothing more.</li>
+    <li><b>Edges matched</b>: the share of edges visible in the photos that the model reproduces within 3 pixels. <b>Edge precision</b> is the reverse: the share of the model's edges that are really in the photos.</li>
+    <li><b>Depth error</b>: average distance from the model's surface to a 3-D point cloud recovered from the photos, on surfaces the photos actually show.</li>
+    <li>The simple-shapes model is scored with the cameras its own pipeline recovered; the other two use the measured model's cameras. The melted model was given its best possible placement first, so the comparison is fair to it.</li>
+  </ul>
 </section>
-
-<section>
-  <h2>From angles no photo shows</h2>
-  <figure>
-    <img src="other-angles.jpg" alt="The model from front three-quarter, rear three-quarter, top and the unphotographed side" loading="lazy">
-    <figcaption>Front three-quarter, rear three-quarter, top, and the side no photo covered. Surfaces the photos never saw are filled in plausibly, not measured.</figcaption>
-  </figure>
-</section>
-
-<section>
-  <h2>What to keep in mind</h2>
-  <div class="cols">
-    <div><h3>Measured where it was seen</h3><p>Everything visible in at least one photo is measured from it. The top, the bottom and the unphotographed side are reasonable fill-ins.</p></div>
-    <div><h3>Materials are generic</h3><p>Cast aluminium, black-coated steel, brass, copper and plastic are standard material settings, not colours taken from the photos.</p></div>
-    <div><h3>One part, so far</h3><p>This alternator was designed by hand with the measuring tools. An automatic version that takes any three photos is in progress.</p></div>
-  </div>
-</section>
-
-<footer>Photos and model © ehkruse1-code. 3-D viewer: three.js.</footer>
+<footer>Photos and models © ehkruse1-code. 3-D viewer: three.js. The full story starts on the <a href="index.html">overview</a>.</footer>
 </div>
-
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-
-const stage = document.getElementById('stage'), canvas = document.getElementById('cv'), status = document.getElementById('status');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
-const scene = new THREE.Scene();
-scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
-const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(-0.4, 0.8, 0.6); scene.add(key);
-const camera = new THREE.PerspectiveCamera(28, 1, 0.005, 10);
-const controls = new OrbitControls(camera, canvas); controls.enableDamping = true; controls.autoRotateSpeed = 1.6;
-function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
-new ResizeObserver(resize).observe(stage); resize();
-let radius = 0.6; const target = new THREE.Vector3();
-function setView(az, el) {
-  const a = THREE.MathUtils.degToRad(az), e = THREE.MathUtils.degToRad(el);
-  camera.position.set(target.x + radius * Math.sin(a) * Math.cos(e), target.y + radius * Math.sin(e), target.z + radius * Math.cos(a) * Math.cos(e));
-  controls.target.copy(target); controls.update();
-}
-new GLTFLoader().load('alternator.glb', gltf => {
-  const model = gltf.scene; scene.add(model);
-  const box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3()); box.getCenter(target);
-  radius = size.length() / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) * 0.8;
-  controls.minDistance = radius * 0.25; controls.maxDistance = radius * 4; setView(35, 22); status.hidden = true;
-}, xhr => { if (xhr.total) status.textContent = `Loading model… ${Math.round(100 * xhr.loaded / xhr.total)}%`; },
-   err => { status.textContent = 'The model could not load. Reload the page to try again.'; });
-renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
-const spin = document.getElementById('spin'); const presets = [...document.querySelectorAll('[data-view]')];
-presets.forEach(b => b.addEventListener('click', () => {
-  presets.forEach(x => x.setAttribute('aria-pressed', String(x === b))); controls.autoRotate = false; spin.setAttribute('aria-pressed', 'false');
-  const [az, el] = b.dataset.view.split(',').map(Number); setView(az, el);
-}));
-spin.addEventListener('click', () => { const on = spin.getAttribute('aria-pressed') !== 'true'; spin.setAttribute('aria-pressed', String(on)); controls.autoRotate = on; });
-</script>
 </body>
 </html>
